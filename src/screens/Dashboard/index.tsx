@@ -10,7 +10,9 @@ import {
     UserGreeting,
     UserName,
     Icon,
-    HighlightCards
+    HighlightCards,
+    Transactions,
+    Title
 } from './styles'
 
 export function Dashboard() {
@@ -34,6 +36,11 @@ export function Dashboard() {
                 <HighlightCard type="total" title="Total" amount="R$ 16.141,00" lastTransaction="01 à 16 de abril" />
             </HighlightCards>
 
+<Transactions>
+    <Title>
+
+    </Title>
+</Transactions>
         </Container>
     )
 }
