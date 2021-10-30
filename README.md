@@ -13,9 +13,10 @@
 - Styled Components :heavy_check_mark:
 - YUP :heavy_check_mark:
 - Typescript :heavy_check_mark:
+- UUID :heavy_check_mark:
+- AsyncStorage :heavy_check_mark:
 
 ## O que ainda será acrescentado?
-- AsyncStorage :x:
 - Autenticação Social / Context :x:
 
 ## Melhorias e implementações que poderão ser feitas
