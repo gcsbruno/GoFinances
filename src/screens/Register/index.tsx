@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -9,6 +9,7 @@ import { InputForm } from '../../components/Form/InputForm'
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton'
 import { CategorySelect } from '../CategorySelect'
 import { Container, Header, Title, Form, Fields, TransactionsTypes } from './styles'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface FormData {
     name: string;
@@ -28,13 +29,15 @@ const schema = Yup.object().shape({
 export function Register() {
     const [transactionType, setTransactionType] = useState('');
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+
+    const dataKey = '@gofinances:transactions';
     const [category, setCategory] = useState({
         key: 'category',
         name: 'Categoria'
     });
 
     const {
-        control, handleSubmit, formState: {errors}
+        control, handleSubmit, formState: { errors }
     } = useForm({
         resolver: yupResolver(schema)
     });
@@ -51,7 +54,7 @@ export function Register() {
         setCategoryModalOpen(true)
     }
 
-    function handleRegister(form: FormData) {
+    async function handleRegister(form: FormData) {
         if (!transactionType)
             return Alert.alert('Selecione o tipo de transação');
 
@@ -65,8 +68,22 @@ export function Register() {
             category: category.key
 
         }
-        console.log(data)
+        try {
+            await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+        } catch (error) {
+            console.log(error);
+            Alert.alert("Não foi possível salvar")
+        }
     }
+
+    useEffect(() => {
+        async function loadData() {
+            const data = await AsyncStorage.getItem(dataKey);
+            console.log(JSON.parse(data!))
+        }
+
+        loadData();
+    }, [])
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
