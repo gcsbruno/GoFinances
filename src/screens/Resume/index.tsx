@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react'
 import { HistoryCard } from '../../components/HistoryCard'
 import { categories } from '../../utils/categories';
-import { Container, Header, Title } from './styles'
+import { Container, Content, Header, Title } from './styles'
 
 interface TransactionData {
     type: 'positive' | 'negative';
@@ -13,14 +13,17 @@ interface TransactionData {
 }
 
 interface CategoryData {
+    key: string;
     name: string;
     total: string;
+    color: string;
 }
 
 export function Resume() {
 
+    const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
+
     async function LoadData() {
-        const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
 
         const dataKey = '@gofinances:transactions';
         const response = await AsyncStorage.getItem(dataKey);
@@ -46,7 +49,9 @@ export function Resume() {
                 })
 
                 totalByCategory.push({
+                    key: category.key,
                     name: category.name,
+                    color: category.color,
                     total,
                 });
             }
@@ -64,15 +69,19 @@ export function Resume() {
             <Header>
                 <Title>Resumo por categoria</Title>
             </Header>
-            {
-                totalByCategories.map(item => (
-                    <HistoryCard
-                        title={item.name}
-                        amount={item.total}
-                        color='red'
-                    />
-                ))
-            }
+
+            <Content>
+                {
+                    totalByCategories.map(item => (
+                        <HistoryCard
+                        key={item.key}
+                            title={item.name}
+                            amount={item.total}
+                            color={item.color}
+                        />
+                    ))
+                }
+            </Content>
         </Container>
     )
 }
