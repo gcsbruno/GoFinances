@@ -15,6 +15,7 @@
 - Typescript :heavy_check_mark:
 - UUID :heavy_check_mark:
 - AsyncStorage :heavy_check_mark:
+- INTL e DateFNS ✔️
 
 ## O que ainda será acrescentado?
 - Autenticação Social / Context :x:
